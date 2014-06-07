@@ -1,12 +1,3 @@
-Dlex
-====
-
-Dwylkz's Lexical Analyzer Generator
-
-  An tiny basic and simple generator.
-
-Usage
-=====
 Dlex ver 0.01
 
 	Dwylkz's Lexical Analyzer generator.
@@ -136,31 +127,3 @@ Dlex ver 0.01
 	Bug Report:
 		
 		email: xellosgeteternal@gmail.com
-
-
-INTERFACE
-=========
-	Dlex using some ugly interfaces which has side effect and it's not simple and flexible enough to use.
-	Dlex2 is recommand :).
-
-	MACRO:
-
-		NOACCEPT -1:          Indicate the NFA fail to parse a specific pattern.
-
-	Global Variables:
-
-		  FLIE *iFile:        Input file.          
-		  int acceptState:    Store current acceptState if NFA parsed sucessfully, otherwise NOTACCEPT would be its rhs.
-		  int acceptLenght:   Store currnet acceptLength, AKA the length of the word which match some pattern.
-		  int isEOF:          Check if we had meet the end of file.
-		
-	Functions:
-
-		  int dealAction(int state):            Invoke action correspond to state.
-		  void escape(char *tmp, char c):       Put an escape charactor(backslash) behind some metacharactor, for
-		                                        pretty printing use.
-		  void NFA():                           Parse the iFile, stop whenever match a legal/illegal pattern.
-
-	See also:
-
-		  If you still confuse, it recommand that to take a look at test/ folder.

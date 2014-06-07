@@ -1,0 +1,32 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+bolan	dlex.c	/^char bolan[BUFFERSIZE];$/;"	v
+deBug	dlex.c	/^void deBug() {$/;"	f
+dealAction	dlex.c	/^void dealAction() {$/;"	f
+dealComments	dlex.c	/^void dealComments() {$/;"	f
+dealDirectOutput	dlex.c	/^void dealDirectOutput() {$/;"	f
+dealDregex	dlex.c	/^void dealDregex(int addParent) {$/;"	f
+dealEscape	dlex.c	/^void dealEscape() {$/;"	f
+dealIdentifier	dlex.c	/^void dealIdentifier() {$/;"	f
+dealRserve	dlex.c	/^void dealRserve() {$/;"	f
+dregexBuffer	dlex.c	/^		dregexBuffer[REGEXSIZE << 1];$/;"	v
+eatSpace	dlex.c	/^void eatSpace() {$/;"	f
+escape	dlex.c	/^const char escape[SYMBOLAMOUNT] = {$/;"	v
+idBuffer	dlex.c	/^		idBuffer[WORDSIZE],$/;"	v
+isFollow	dlex.c	/^int isFollow(int c) {$/;"	f
+isOperator	dlex.c	/^int isOperator(int c) {$/;"	f
+main	dlex.c	/^int main(int argc, char *argv[]) {$/;"	f
+opPriority	dlex.c	/^	opPriority[SYMBOLAMOUNT] = {$/;"	v
+opStack	dlex.c	/^int opStack[BUFFERSIZE],$/;"	v
+popOp	dlex.c	/^void popOp() {$/;"	f
+pushOp	dlex.c	/^void pushOp(int c) {$/;"	f
+reserve	dlex.c	/^const char reserve[RESERVEAMOUNT][RESERVESIZE] = {$/;"	v
+scanDlexfile	dlex.c	/^void scanDlexfile() {$/;"	f
+testChar	dlex.c	/^int testChar() {$/;"	f
+toBolan	dlex.c	/^void toBolan() {$/;"	f
+topOp	dlex.c	/^int topOp() {$/;"	f
+wordBuffer	dlex.c	/^char	wordBuffer[BUFFERSIZE],$/;"	v
