@@ -1,0 +1,53 @@
+\magnification=\magstep1
+\def\begindmath{$$}
+\def\enddmath{$$}
+\def\First#1=#2{{\bf First}(#1)&=\{\,#2\,\}}
+\def\Do#1{\{{\rm #1}\}}
+
+\begindmath\eqalign{
+	0.&<S>::=<P>\cr
+	1.&<P>::=<P><E>\cr
+	2.&<P>::=\cr
+	3.&<E>::=<m>``="<T>``;"\cr
+	&\Do{E.v = meta\_map(m), meta\_body\_set\_uni(E.v, T.v)}\cr
+	4.&<T>::=<T>``|" <C>\Do{meta_body_set_push(T_1.v, C.v), T.v = T_1.v}\cr
+	5.&<T>::=<C>\Do{T.v = meta_body_set_new(), meta_body_set_push(T.v, C.v)}\cr
+	6.&<C>::=<C>``," <X>\Do{meta\_body\_cat(C_1.v, X.v), C.v = C_1.v}\cr
+	7.&<C>::=<X>\Do{C.v = X.v}\cr
+	8.&<X>::=<X>``-" <F>\Do{meta\_body\_sub(X_1.v, F.v), X.v = X_1.v}\cr
+	9.&<X>::=<F>\Do{X.v = F.v}\cr
+	10.&<F>::=<m>\Do{F.v = meta\_body\_new(), meta\_body\_push\_n(F.v, m)}\cr
+	11.&<F>::=<s>\Do{F.v = meta\_body\_new(), meta\_body\_push\_t(F.v, s.v)}\cr
+	12.&<F>::=\Do{F.v = meta\_body\_new()}\cr
+	\First S={m}\cr
+	\First P={m}\cr
+	\First E={m}\cr
+	\First T={m, f}\cr
+	\First C={m, f}\cr
+	\First X={m, f}\cr
+	\First F={m, s}\cr
+} \enddmath
+
+\begindmath\matrix{
+      &  0  &  1  &  2  &  3  &  4  &  5  &  6  &  7  &  8  &  9  & 10  & 11  & 12  & 13  & 14 \cr
+      &  m  &  s  &  =  &  |  &  ,  &  -  &  ;  &  e  &  S  &  P  &  E  &  T  &  C  &  X  &  F \cr
+    0 & r2  &     &     &     &     &     &     & r2  &     &  1  &     &     &     &     &    \cr
+    1 & s2  &     &     &     &     &     &     & ac  &     &     & 15  &     &     &     &    \cr
+    2 &     &     & s3  &     &     &     &     &     &     &     &     &     &     &     &    \cr
+    3 & s9  & s10 &     & r12 & r12 & r12 & r12 &     &     &     &     &  4  &  6  &  7  &  8 \cr
+    4 &     &     &     & s16 &     &     & s5  &     &     &     &     &     &     &     &    \cr
+    5 & r3  &     &     &     &     &     &     & r3  &     &     &     &     &     &     &    \cr
+    6 &     &     &     & r5  & s11 &     & r5  &     &     &     &     &     &     &     &    \cr
+    7 &     &     &     & r7  & r7  & s12 & r7  &     &     &     &     &     &     &     &    \cr
+    8 &     &     &     & r9  & r9  & r9  & r9  &     &     &     &     &     &     &     &    \cr
+    9 &     &     &     & r10 & r10 & r10 & r10 &     &     &     &     &     &     &     &    \cr
+   10 &     &     &     & r11 & r11 & r11 & r11 &     &     &     &     &     &     &     &    \cr
+   11 & s9  & s10 &     & r12 & r12 & r12 & r12 &     &     &     &     &     &     &  14 &  8 \cr
+   12 & s9  & s10 &     & r12 & r12 & r12 & r12 &     &     &     &     &     &     &     & 17 \cr
+   13 &     &     &     & r4  & s11 &     & r4  &     &     &     &     &     &     &     &    \cr
+   14 &     &     &     & r6  & r6  & s12 & r6  &     &     &     &     &     &     &     &    \cr
+   15 & r1  &     &     &     &     &     &     & r1  &     &     &     &     &     &     &    \cr
+   16 & s9  & s10 &     & r12 & r12 & r12 & r12 &     &     &     &     &     &  13 &  7  &  8 \cr
+   17 &     &     &     & r8  & r8  & r8  & r8  &     &     &     &     &     &     &     &    \cr
+}\enddmath
+\bye

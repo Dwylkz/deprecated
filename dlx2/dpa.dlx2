@@ -1,0 +1,101 @@
+digit
+= '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9';
+
+alpha
+= 'a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'g' | 'h' | 'i' | 'j' | 'k' | 'l' | 'm'
+| 'n' | 'o' | 'p' | 'q' | 'r' | 's' | 't' | 'u' | 'v' | 'w' | 'x' | 'y' | 'z'
+| 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'H' | 'I' | 'J' | 'K' | 'L' | 'M'
+| 'N' | 'O' | 'P' | 'Q' | 'R' | 'S' | 'T' | 'U' | 'V' | 'W' | 'X' | 'Y' | 'Z';
+
+
+defininator
+= '=';
+
+concatenator
+= ',';
+
+sperator
+= '|';
+
+exceptor
+= '-';
+
+terminator
+= ';';
+
+lcomment
+= '(', '*';
+
+rcomment
+= '*', ')';
+
+first_quote
+= "'";
+
+second_quote
+= '"';
+
+space
+= ' ';
+
+tabulator
+= '	';
+
+new_line
+= '
+';
+
+empty
+= '';
+
+other
+= '~' | '@' | '#' | '$' | '%' | '^' | '&'
+| '*' | '(' | ')' | '_' | '+' | '{' | '['
+| '}' | ']' | '\' | ':' | '<' | '>' | '.'
+| '?' | '/' | '';
+
+first_terminator
+= digit
+| alpha
+| defininator
+| concatenator
+| sperator
+| exceptor
+| terminator
+| lcomment
+| rcomment
+(* | first_quote *)
+| second_quote
+| space
+| tabulator
+| new_line
+| empty
+| other;
+
+second_terminator
+= digit
+| alpha
+| defininator
+| concatenator
+| sperator
+| exceptor
+| terminator
+| lcomment
+| rcomment
+| first_quote
+(* | second_quote *)
+| space
+| tabulator
+| new_line
+| empty
+| other;
+
+string
+= first_quote, first_terminator, first_quote
+| second_quote, second_terminator, second_quote;
+
+meta_identifier
+= alpha, {alpha | digit | '_'};
+
+endless_story
+= '';

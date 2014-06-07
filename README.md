@@ -1,11 +1,5 @@
-## Deprecated projects
-
-### dif
-
-### dac
-
-### dlex-old
-
-### dlex
-
-### dpa
+DPA
+===
+Dwylkz's Parser GenerAtor
+Usage
+=====
