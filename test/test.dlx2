@@ -1,0 +1,16 @@
+(* test use *) test
+= {'a' | 'b'}, 'a', 'b', 'b';
+
+(* test use too *) test_too
+= test, 'b';
+
+(* Miss. Wu *) miss_wu
+= 'w', 'u', 'y', 'u';
+
+(* space_character *) space_character
+= ' ' | '
+';
+
+duck = 'd', 'u', 'c', 'k';
+
+nduck = 'd', {'d'}, 'u', 'c', 'k';

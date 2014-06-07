@@ -1,0 +1,84 @@
+letter
+= 'a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'g' | 'h' | 'i' | 'j' | 'k' | 'l' | 'm'
+| 'n' | 'o' | 'p' | 'q' | 'r' | 's' | 't' | 'u' | 'v' | 'w' | 'x' | 'y' | 'z'
+| 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'H' | 'I' | 'J' | 'K' | 'L' | 'M'
+| 'N' | 'O' | 'P' | 'Q' | 'R' | 'S' | 'T' | 'U' | 'V' | 'W' | 'X' | 'Y' | 'Z';
+
+decimal_digit
+= '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9';
+
+concatenate_symbol = ',';
+
+defining_symbol = '=';
+
+defining_separator = '|';
+
+end_comment_symbol = '*', ')';
+
+end_group_symbol = ')';
+
+end_repeat_symbol = '}';
+
+first_quote_symbol = "'";
+
+second_quote_symbol = '"';
+
+start_comment_symbol = '(', '*';
+
+start_group_symbol = '(';
+
+start_repeat_symbol = '{';
+
+terminator_symbol = ';';
+
+other_character
+= '~' | '`' | '!' | '@' | '#' | '$'
+| '%' | '^' | '&' | '*' | '-' | '_'
+| '+' | '[' | ']' | '\' | ':' | '<'
+| '>' | '.' | '/' | '?' | '	';
+
+space_character = ' ';
+
+new_line = '
+';
+
+free_character
+= letter
+| decimal_digit
+| concatenate_symbol
+| defining_symbol
+| defining_separator
+| end_group_symbol
+| end_repeat_symbol
+| start_comment_symbol
+| start_group_symbol
+| start_repeat_symbol
+| space_character
+| terminator_symbol
+| other_character;
+
+quote_free_character
+= free_character
+| end_comment_symbol;
+
+comment_free_character
+= free_character
+| first_quote_symbol
+| second_quote_symbol;
+
+terminal_character
+= quote_free_character
+| end_comment_symbol
+| first_quote_symbol
+| second_quote_symbol;
+
+terminal_string
+= first_quote_symbol,
+	( quote_free_character | second_quote_symbol ),
+	first_quote_symbol
+| second_quote_symbol,
+	( quote_free_character | first_quote_symbol ),
+	second_quote_symbol;
+
+meta_identifier
+= ( letter | '_' ), { letter | decimal_digit | '_' };
