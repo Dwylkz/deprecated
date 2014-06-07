@@ -1,0 +1,9 @@
+# man3_MANS = docs/man/man3/*
+
+.PHONY: doc-gen
+doc-gen:
+	doxygen doxygen.cfg
+
+.PHONY: doc-clean 
+doc-clean:
+	rm -rf docs

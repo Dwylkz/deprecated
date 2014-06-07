@@ -1,0 +1,207 @@
+#!/bin/bash
+
+USAGE=$(printf 'usage %s [-p <prefix>] [-d] [-h] [-a] [-t <template>] <name>\n' $0)
+
+toupper() {
+	echo $1 | tr '[:lower:]' '[:upper:]'
+}
+
+HEADER="v2/"
+
+while getopts dhp:t:a op; do
+	case ${op} in
+		a)
+			DO_ALL=1
+			;;
+		t)
+			if [[ -z $OPTARG ]]; then
+				echo $USAGE
+				echo 'missing argument in p'
+				exit -1
+			fi
+			DACT=${OPTARG}
+			;;
+		h)
+			echo $USAGE
+			exit 0
+			;;
+		d)
+			DAC="Dac"
+			DACP="DAC_V2_"
+			HEADER=
+			;;
+		p)
+			if [[ -z $OPTARG ]]; then
+				echo $USAGE
+				echo 'missing argument in p'
+				exit -1
+			fi
+			PREFIX=$(toupper $OPTARG)_
+			;;
+		?)
+			echo $USAGE
+			exit -1
+	esac
+done
+
+shift $(($OPTIND - 1))
+
+if [[ -z $1 ]]; then
+	echo $USAGE
+	echo 'missing dac name'
+	exit -1
+fi
+
+FILE=$1
+
+TYPE=${DAC}$1
+
+NAME=$(toupper $1)
+
+GUARD=${DACP}${PREFIX}${NAME}_H_
+
+head() {
+	echo "#ifndef ${GUARD}"
+	echo "# define ${GUARD}"
+	echo ""
+	echo "#include <${HEADER}Comm.h>"
+	echo ""
+	echo "typedef struct ${TYPE} {"
+	echo "  DacType* type;"
+	echo "  void* data;"
+	echo "} ${TYPE};"
+	echo ""
+	echo "void* ${TYPE}Copy(void* self);"
+	echo "void ${TYPE}Free(void* self);"
+	echo "int ${TYPE}Vs(void* self, void* that);"
+	echo "uint32_t ${TYPE}Hash(void* self);"
+	echo "char* ${TYPE}Push(void* self);"
+	echo "char* ${TYPE}Pull(const char* flow, void* self);"
+	echo "extern DacType* ${TYPE}Type;"
+	echo ""
+	echo "#endif // ${GUARD}"
+}
+
+body() {
+	echo "#include <${FILE}.h>"
+	echo ""
+	echo "void* ${TYPE}Copy(void* self)"
+	echo "{"
+	echo "  ${TYPE}* from = self;"
+	echo "  ${TYPE}* bud = calloc(1, sizeof(${TYPE}));"
+	echo "  if (bud == NULL)"
+	echo "    DacGoto(err_0, DAC_ERR_ALLOC);"
+	echo "  return bud;"
+	echo "err_0:"
+	echo "  return NULL;"
+	echo "}"
+	echo ""
+	echo "void ${TYPE}Free(void* self)"
+	echo "{"
+	echo "  ${TYPE}* old = self;"
+	echo "  free(old);"
+	echo "}"
+	echo ""
+	echo "int ${TYPE}Vs(void* self, void* that)"
+	echo "{"
+	echo "  ${TYPE}* lhs = self;"
+	echo "  ${TYPE}* rhs = that;"
+	echo "  return 0;"
+	echo "}"
+	echo ""
+	echo "uint32_t ${TYPE}Hash(void* self)"
+	echo "{"
+	echo "  uint32_t code = 0;"
+	echo "  ${TYPE}* old = self;"
+	echo "  return code;"
+	echo "}"
+	echo ""
+	echo "char* ${TYPE}Push(void* self)"
+	echo "{"
+	echo "  ${TYPE}* old = self;"
+	echo "  return NULL;"
+	echo "}"
+	echo ""
+	echo "char* ${TYPE}Pull(const char* flow, void* self)"
+	echo "{"
+	echo "  char* i;"
+	echo "  ${TYPE}* bud = calloc(1, sizeof(${TYPE}));"
+	echo "  if (bud == NULL)"
+	echo "    DacGoto(err_0, DAC_ERR_ALLOC);"
+	echo ""
+	echo "  *(${TYPE}**)self = bud;"
+	echo "  return i;"
+	echo "err_0:"
+	echo "  return NULL;"
+	echo "}"
+	echo ""
+	echo "static DacType __${TYPE}Type = {"
+	echo "  ${TYPE}Copy,"
+	echo "  ${TYPE}Free,"
+	echo "  ${TYPE}Vs,"
+	echo "  ${TYPE}Hash,"
+	echo "  ${TYPE}Push,"
+	echo "  ${TYPE}Pull"
+	echo "};"
+	echo "DacType* ${TYPE}Type = &__${TYPE}Type;"
+	echo ""
+	echo "${TYPE}* ${TYPE}New()"
+	echo "{"
+	echo "  ${TYPE}* bud = calloc(1, sizeof(${TYPE}));"
+	echo "  if (bud == NULL)"
+	echo "    DacGoto(err_0, DAC_ERR_ALLOC);"
+	echo "  return bud;"
+	echo "err_0:"
+	echo "  return NULL;"
+	echo "}"
+}
+
+printf 'Output into %s and %s\n' ${FILE}.h ${FILE}.c
+printf 'New type: %s\n' ${TYPE}
+
+head > ${FILE}.h
+
+body > ${FILE}.c
+
+parse() {
+	IMPORTS=${DACT}
+	local IMPORT=($(gawk 'BEGIN{RS="//--"}{printf $1 " "}' ${DACT}))
+	while [[ ${IMPORT} != 'null' ]]; do
+		IMPORTS="${IMPORT} ${IMPORTS}"
+		IMPORT=($(gawk 'BEGIN{RS="//--"}{printf $1 " "}' ${IMPORT}))
+		if [[ $? != 0 ]]; then
+			exit -1
+		fi
+	done
+}
+
+output_extra() {
+	for i in ${IMPORTS}; do
+		echo "importing ${i} to ${FILE}.h"
+		gawk 'BEGIN{RS="//--"} NR==2{printf $0}' ${i} \
+			| sed "s,\${TYPE},${TYPE},g" \
+			| sed "s,\${GUARD},${GUARD},g" \
+			| sed "s,\${FILE},${FILE},g" \
+			| sed "s,\${HEADER},${HEADER},g" \
+			>> ${FILE}.h
+		echo "importing ${i} to ${FILE}.c"
+		gawk 'BEGIN{RS="//--"} NR==3{printf $0}' ${i} \
+			| sed "s,\${TYPE},${TYPE},g" \
+			| sed "s,\${GUARD},${GUARD},g" \
+			| sed "s,\${FILE},${FILE},g" \
+			| sed "s,\${HEADER},${HEADER},g" \
+			>> ${FILE}.c
+	done
+}
+
+if [[ -n ${DACT} ]]; then
+	if [[ -n ${DO_ALL} ]]; then
+		echo "Replace All"
+		rm ${FILE}.h ${FILE}.c
+	fi
+	echo 'extra template:' ${DACT}
+	parse ${DACT}
+	output_extra
+fi
+
+exit 0
