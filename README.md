@@ -1,11 +1,4 @@
-## Deprecated projects
+mylang
+======
 
-### dif
-
-### dac
-
-### dlex-old
-
-### dlex
-
-### dpa
+simple parser generator
