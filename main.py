@@ -9,9 +9,11 @@ if __name__ == '__main__':
     proxies = request.ProxyHandler(proxy)
     opener = request.build_opener(proxies)
 
+    # print('+'.join(sys.argv[1:-1]), sys.argv[-1])
+    # exit(0)
 
-    # html = opener.open('https://pornhub.com/video/search?=jav+creampie&page={}'.format(16)).read().decode()
-    html = opener.open(sys.argv[1]).read().decode()
+    html = opener.open('https://pornhub.com/video/search?={}&page={}'.format('+'.join(sys.argv[1:-1]), sys.argv[-1])).read().decode()
+    # html = opener.open(sys.argv[1]).read().decode()
     soup = BeautifulSoup(html, features="lxml")
     sectionWrapper = soup.body.select(".wrapper")[0].select(".container")[0].select(".gridWrapper")[0].select(".nf-videos")[0].select(".sectionWrapper")[0]
 
@@ -48,3 +50,4 @@ if __name__ == '__main__':
         if len(medias) == 0:
             continue
         print(medias[0]["videoUrl"])
+    print('_'.join(sys.argv[1:-1])+'-'+sys.argv[-1])
