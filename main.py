@@ -12,7 +12,9 @@ if __name__ == '__main__':
     # print('+'.join(sys.argv[1:-1]), sys.argv[-1])
     # exit(0)
 
-    html = opener.open('https://pornhub.com/video/search?={}&page={}'.format('+'.join(sys.argv[1:-1]), sys.argv[-1])).read().decode()
+    result_url = 'https://pornhub.com/video/search?search={}&page={}'.format('+'.join(sys.argv[1:-1]), sys.argv[-1])
+    # print(result_url)
+    html = opener.open(result_url).read().decode()
     # html = opener.open(sys.argv[1]).read().decode()
     soup = BeautifulSoup(html, features="lxml")
     sectionWrapper = soup.body.select(".wrapper")[0].select(".container")[0].select(".gridWrapper")[0].select(".nf-videos")[0].select(".sectionWrapper")[0]
@@ -34,6 +36,7 @@ if __name__ == '__main__':
     for item in sectionWrapper.select(".videos")[0].select(".pcVideoListItem"):
         raw = 'https://www.pornhub.com{}'.format(item.div.select(".phimage")[0].a["href"])
         # print(raw)
+        # continue
         #params = {'video': raw}
         #downloadpage = 'https://www.tubeoffline.com/downloadFrom.php?host=PornHub&video={}'.format(raw);
         #downloadpage = 'https://www.tubeoffline.com/downloadFrom.php?host=PornHub&{}'.format(urllib.parse.urlencode(params));
