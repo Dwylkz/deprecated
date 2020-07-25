@@ -3,6 +3,8 @@ from urllib import request
 import urllib
 import sys
 import json
+from urllib.parse import quote
+import string
 
 if __name__ == '__main__':
     proxy = {'http':'127.0.0.1:1080','https':'127.0.0.1:1080'}
@@ -13,8 +15,9 @@ if __name__ == '__main__':
     # exit(0)
 
     result_url = 'https://pornhub.com/video/search?search={}&page={}'.format('+'.join(sys.argv[1:-1]), sys.argv[-1])
-    # print(result_url)
-    html = opener.open(result_url).read().decode()
+    quote(result_url,safe=string.printable)
+    print(result_url)
+    html = opener.open(quote(result_url,safe=string.printable)).read().decode()
     # html = opener.open(sys.argv[1]).read().decode()
     soup = BeautifulSoup(html, features="lxml")
     sectionWrapper = soup.body.select(".wrapper")[0].select(".container")[0].select(".gridWrapper")[0].select(".nf-videos")[0].select(".sectionWrapper")[0]
